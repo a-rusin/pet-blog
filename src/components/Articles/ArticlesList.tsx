@@ -1,23 +1,16 @@
 import { useEffect } from "react";
 import { Article } from ".";
-import { articlesService } from "../../services/articles.service";
-import { nanoid } from "nanoid";
+import { useAppDispatch } from "../../types/store";
+import { fetchAllArticles } from "../../store/articlesSlice";
 
 export const ArticlesList = () => {
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    getData();
+    dispatch(fetchAllArticles());
   }, []);
 
-  const getData = async () => {
-    await articlesService.getAll();
-  };
-
-  const handleClick = async () => {
-    await articlesService.create({
-      id: nanoid(),
-      title: "Text",
-    });
-  };
+  const handleClick = async () => {};
 
   return (
     <>
