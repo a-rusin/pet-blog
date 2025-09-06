@@ -10,12 +10,8 @@ export const ArticlesList = () => {
     dispatch(fetchAllArticles());
   }, []);
 
-  const handleClick = async () => {};
-
   return (
     <>
-      <button onClick={handleClick}>Create</button>
-
       <ul className="flex gap-4 pt-20 flex-wrap container">
         <Article />
       </ul>

@@ -5,4 +5,7 @@ export const articlesSchema = z.object({
   title: z.string(),
 });
 
+// @ts-ignore
+export const articlesArraySchema = z.union([z.array(articlesSchema), z.null()]);
+
 export type Article = z.infer<typeof articlesSchema>;
