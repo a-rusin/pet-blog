@@ -1,5 +1,12 @@
+import { Route, Routes } from "react-router-dom";
+import { MainRoutes } from "./routes/MainRoutes";
+
 function App() {
-  return <div className="App font-cabinet-grotesk min-h-screen flex flex-col">Hello world!</div>;
+  return (
+    <Routes>
+      <Route path="/*" element={<MainRoutes />} />
+    </Routes>
+  );
 }
 
 export default App;
