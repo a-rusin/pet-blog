@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Article } from ".";
 import { articlesService } from "../../services/articles.service";
-import { Article as IArticle } from "../../types/Article";
 import { nanoid } from "nanoid";
 
 export const ArticlesList = () => {
-  const [articles, setArticles] = useState<IArticle[] | null>(null);
-
   useEffect(() => {
     getData();
   }, []);
 
   const getData = async () => {
-    const data = await articlesService.getAll();
-    console.log(data);
+    await articlesService.getAll();
   };
 
   const handleClick = async () => {
-    const data = await articlesService.create({
+    await articlesService.create({
       id: nanoid(),
       title: "Text",
     });
