@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Cabinet Grotesk Variable";
+  src: url("./assets/fonts/Cabinet-Grotesk-Variable/Cabinet-Grotesk-Variable.woff2") format("woff2"),
+    url("./assets/fonts/Cabinet-Grotesk-Variable/Cabinet-Grotesk-Variable.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("./assets/fonts/Cabinet-Grotesk/Cabinet-Grotesk-Regular.woff2") format("woff2"),
+    url("./assets/fonts/Cabinet-Grotesk/Cabinet-Grotesk-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer components {
+  .container {
+    @apply max-w-[1184px] mx-auto;
+  }
+}
