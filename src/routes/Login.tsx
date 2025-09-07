@@ -6,7 +6,7 @@ import { RegisterForm } from "../components/RegisterForm";
 export const Login = () => {
   const [formType, setFormType] = useState<LoginFormType>(LoginFormType.login);
 
-  const handleClick = () => {
+  const changeForm = () => {
     if (formType === LoginFormType.login) {
       setFormType(LoginFormType.register);
       return;
@@ -18,10 +18,10 @@ export const Login = () => {
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       {formType === LoginFormType.login && <LoginForm />}
-      {formType === LoginFormType.register && <RegisterForm />}
+      {formType === LoginFormType.register && <RegisterForm changeForm={changeForm} />}
 
       <div className="mt-10 text-center ">
-        <div className="inline-block font-semibold text-black hover:text-black/80 cursor-pointer" onClick={handleClick}>
+        <div className="inline-block font-semibold text-black hover:text-black/80 cursor-pointer" onClick={changeForm}>
           {formType === LoginFormType.login ? "Register now" : "Login now"}
         </div>
       </div>

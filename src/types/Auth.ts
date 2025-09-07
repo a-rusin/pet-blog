@@ -9,7 +9,7 @@ export const UserRegisterSchema = z.object({
     .min(6, { message: "The password must be at least 6 characters long." }),
 });
 
-export const CreatedUserSchema = UserRegisterSchema.omit({ password: true }).extend({ id: z.string });
+export const CreatedUserSchema = UserRegisterSchema.omit({ password: true }).extend({ id: z.string() });
 
 export const UserRegisterSchemaServerResponce = z.object({
   idToken: z.string(),

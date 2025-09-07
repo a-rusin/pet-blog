@@ -1,7 +1,9 @@
 import { CreatedUserSchema, UserCreated, UserRegisterSchemaServerResponce } from "./../types/Auth";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserRegister } from "../types/Auth";
 import { authService } from "../services/auth.service";
+import { errorHandler } from "../utils/errorHandler";
+import { toast } from "react-toastify";
 
 interface AuthState {
   userId: string | null;
@@ -23,30 +25,43 @@ export const authSlice = createSlice({
     builder
       .addCase(register.pending, (state, action) => {
         state.isLoading = true;
+        state.errors = null;
       })
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.errors = null;
+      })
+      .addCase(register.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.errors = action.payload;
       });
   },
 });
 
-export const register = createAsyncThunk("auth/register", async (payload: UserRegister) => {
-  try {
-    const data = await authService.register(payload);
-    UserRegisterSchemaServerResponce.parse(data);
-    const { password, ...userWithourPassword } = payload;
+export const register = createAsyncThunk(
+  "auth/register",
+  async ({ payload, onSuccess }: { payload: UserRegister; onSuccess: () => void }, { rejectWithValue }) => {
+    try {
+      const data = await authService.register(payload);
+      UserRegisterSchemaServerResponce.parse(data);
+      const { password, ...userWithourPassword } = payload;
 
-    const newUser: UserCreated = {
-      id: data.localId,
-      ...userWithourPassword,
-    };
-    const createdUser = await authService.createUser(newUser);
-    CreatedUserSchema.parse(createdUser);
+      const newUser: UserCreated = {
+        id: data.localId,
+        ...userWithourPassword,
+      };
+      const createdUser = await authService.createUser(newUser);
+      CreatedUserSchema.parse(createdUser);
 
-    return CreatedUserSchema;
-  } catch (error) {}
-});
+      onSuccess();
+      toast.success("Successful registration");
 
-export const createUser = createAsyncThunk("auth/createUser", async () => {});
+      return createdUser;
+    } catch (error: unknown) {
+      const errorMsg = errorHandler(error);
+      return rejectWithValue(errorMsg);
+    }
+  }
+);
 
 export const authReducer = authSlice.reducer;
