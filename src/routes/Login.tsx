@@ -20,11 +20,11 @@ export const Login = () => {
       {formType === LoginFormType.login && <LoginForm />}
       {formType === LoginFormType.register && <RegisterForm />}
 
-      <p className="mt-10 text-center ">
+      <div className="mt-10 text-center ">
         <div className="inline-block font-semibold text-black hover:text-black/80 cursor-pointer" onClick={handleClick}>
           {formType === LoginFormType.login ? "Register now" : "Login now"}
         </div>
-      </p>
+      </div>
     </div>
   );
 };

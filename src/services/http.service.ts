@@ -7,7 +7,9 @@ export const http = axios.create({
 
 http.interceptors.request.use(
   function (config) {
-    config.url += ".json";
+    if (!config.baseURL?.includes(apiUrls.authUrl)) {
+      config.url += ".json";
+    }
     return config;
   },
   function (error) {

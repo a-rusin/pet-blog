@@ -13,6 +13,7 @@ Libs and technics:
 - Jest Testing
 - CI/CD (auto deploy to VPS)
 - Axios
+- React-hook-form
 - React Forms
 - Linters
 - Git
