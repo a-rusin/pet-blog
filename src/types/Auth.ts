@@ -30,6 +30,6 @@ export const UserLoginSchema = z.object({
 
 export type UserServerResponce = z.infer<typeof UserSchemaServerResponce>;
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
-export type UserCreated = z.infer<typeof CreatedUserSchema>;
+export type User = z.infer<typeof CreatedUserSchema>;
 
 export type UserLogin = z.infer<typeof UserLoginSchema>;

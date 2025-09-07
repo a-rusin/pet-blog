@@ -1,12 +1,19 @@
-import { CreatedUserSchema, UserCreated, UserLogin, UserSchemaServerResponce } from "./../types/Auth";
+import { CreatedUserSchema, User, UserLogin, UserSchemaServerResponce, UserServerResponce } from "./../types/Auth";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserRegister } from "../types/Auth";
 import { authService } from "../services/auth.service";
 import { errorHandler } from "../utils/errorHandler";
 import { toast } from "react-toastify";
+import { localStorageService } from "../services/localStorage.service";
+import {
+  LOCAL_STORAGE_ACCESS_TOKEN,
+  LOCAL_STORAGE_EXPIRES_IN_TOKEN,
+  LOCAL_STORAGE_REFRESH_TOKEN,
+  LOCAL_STORAGE_USER_ID,
+} from "../consts/auth";
 
 interface AuthState {
-  user: UserCreated | null;
+  user: User | null;
   errors: string | null;
   isLoading: boolean;
 }
@@ -39,17 +46,39 @@ export const authSlice = createSlice({
         state.isLoading = true;
         state.errors = null;
       })
-      .addCase(login.fulfilled, (state, action: PayloadAction<UserCreated>) => {
+      .addCase(login.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.errors = action.payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+        state.errors = null;
+      })
+      .addCase(getUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.user = action.payload;
         state.isLoading = false;
         state.errors = null;
       })
-      .addCase(login.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(getUser.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.errors = action.payload;
       });
   },
 });
+
+const setLocalStorage = (data: UserServerResponce) => {
+  localStorageService.set(LOCAL_STORAGE_USER_ID, data.localId);
+  localStorageService.set(LOCAL_STORAGE_ACCESS_TOKEN, data.idToken);
+  localStorageService.set(LOCAL_STORAGE_REFRESH_TOKEN, data.refreshToken);
+  localStorageService.set(LOCAL_STORAGE_EXPIRES_IN_TOKEN, data.expiresIn);
+};
+
+const clearLocalStorage = () => {
+  localStorageService.remove(LOCAL_STORAGE_USER_ID);
+  localStorageService.remove(LOCAL_STORAGE_ACCESS_TOKEN);
+  localStorageService.remove(LOCAL_STORAGE_REFRESH_TOKEN);
+  localStorageService.remove(LOCAL_STORAGE_EXPIRES_IN_TOKEN);
+};
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -59,7 +88,7 @@ export const register = createAsyncThunk(
       UserSchemaServerResponce.parse(data);
       const { password, ...userWithourPassword } = payload;
 
-      const newUser: UserCreated = {
+      const newUser: User = {
         id: data.localId,
         ...userWithourPassword,
       };
@@ -79,19 +108,36 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ payload, onSuccess }: { payload: UserLogin; onSuccess: () => void }, { rejectWithValue }) => {
+  async ({ payload, onSuccess }: { payload: UserLogin; onSuccess: () => void }, { rejectWithValue, dispatch }) => {
     try {
       const data = await authService.login(payload);
       UserSchemaServerResponce.parse(data);
 
-      const userInfo = await authService.getUser(data.localId);
-      CreatedUserSchema.parse(userInfo);
+      await dispatch(getUser(data.localId));
+
+      setLocalStorage(data);
 
       onSuccess();
       toast.success("Successful login");
 
+      return data;
+    } catch (error: unknown) {
+      const errorMsg = errorHandler(error);
+      return rejectWithValue(errorMsg);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk(
+  "auth/getUser",
+  async (userId: UserServerResponce["localId"], { rejectWithValue }) => {
+    try {
+      const userInfo = await authService.getUser(userId);
+      CreatedUserSchema.parse(userInfo);
+
       return userInfo;
     } catch (error: unknown) {
+      clearLocalStorage();
       const errorMsg = errorHandler(error);
       return rejectWithValue(errorMsg);
     }

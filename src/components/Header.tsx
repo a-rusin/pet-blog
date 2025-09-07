@@ -3,7 +3,7 @@ import { routes } from "../configs/routes";
 import { useAppSelector } from "../types/store";
 
 export const Header = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, isLoading } = useAppSelector((state) => state.auth);
 
   return (
     <header className="container">
@@ -11,7 +11,9 @@ export const Header = () => {
         <Link to={routes.home} className="font-cabinet-grotesk-variable text-3xl inline-block">
           My Blog
         </Link>
-        {user ? (
+        {isLoading ? (
+          <div className="font-light text-black/50 text-xl ">Logining...</div>
+        ) : user ? (
           <div className="font-light text-black/50 text-xl ">
             Hello, <span className="underline decoration-solid">{user.login}</span>!
           </div>

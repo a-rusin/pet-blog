@@ -1,5 +1,5 @@
 import { apiUrls } from "../configs/apiUrl";
-import { UserCreated, UserLogin, UserRegister, UserServerResponce } from "../types/Auth";
+import { User, UserLogin, UserRegister, UserServerResponce } from "../types/Auth";
 import { http } from "./http.service";
 
 export const authService = {
@@ -17,14 +17,14 @@ export const authService = {
     });
     return data;
   },
-  createUser: async (payload: UserCreated) => {
+  createUser: async (payload: User) => {
     const url = `${apiUrls.users}/${payload.id}`;
-    const { data } = await http.put<UserCreated>(url, payload);
+    const { data } = await http.put<User>(url, payload);
     return data;
   },
   getUser: async (userId: UserServerResponce["localId"]) => {
     const url = `${apiUrls.users}/${userId}`;
-    const { data } = await http.get<UserCreated>(url);
+    const { data } = await http.get<User>(url);
     return data;
   },
 };
