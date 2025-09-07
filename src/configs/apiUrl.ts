@@ -4,4 +4,5 @@ export const apiUrls = {
   articles: "/articles",
   users: "/users",
   register: `accounts:signUp?key=${process.env.REACT_APP_API_KEY}`,
+  login: `accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`,
 };

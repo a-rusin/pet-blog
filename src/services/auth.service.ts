@@ -1,11 +1,18 @@
 import { apiUrls } from "../configs/apiUrl";
-import { UserCreated, UserRegister, UserRegisterServerResponce } from "../types/Auth";
+import { UserCreated, UserLogin, UserRegister, UserServerResponce } from "../types/Auth";
 import { http } from "./http.service";
 
 export const authService = {
   register: async (payload: UserRegister) => {
     const url = apiUrls.register;
-    const { data } = await http.post<UserRegisterServerResponce>(url, payload, {
+    const { data } = await http.post<UserServerResponce>(url, payload, {
+      baseURL: apiUrls.authUrl,
+    });
+    return data;
+  },
+  login: async (payload: UserLogin) => {
+    const url = apiUrls.login;
+    const { data } = await http.post<UserServerResponce>(url, payload, {
       baseURL: apiUrls.authUrl,
     });
     return data;
@@ -13,6 +20,11 @@ export const authService = {
   createUser: async (payload: UserCreated) => {
     const url = `${apiUrls.users}/${payload.id}`;
     const { data } = await http.put<UserCreated>(url, payload);
+    return data;
+  },
+  getUser: async (userId: UserServerResponce["localId"]) => {
+    const url = `${apiUrls.users}/${userId}`;
+    const { data } = await http.get<UserCreated>(url);
     return data;
   },
 };

@@ -11,7 +11,7 @@ export const UserRegisterSchema = z.object({
 
 export const CreatedUserSchema = UserRegisterSchema.omit({ password: true }).extend({ id: z.string() });
 
-export const UserRegisterSchemaServerResponce = z.object({
+export const UserSchemaServerResponce = z.object({
   idToken: z.string(),
   email: z.string(),
   refreshToken: z.string(),
@@ -25,9 +25,10 @@ export const UserLoginSchema = z.object({
     .string()
     .nonempty({ message: "Password is required" })
     .min(6, { message: "The password must be at least 6 characters long." }),
+  returnSecureToken: z.boolean().optional(),
 });
 
-export type UserRegisterServerResponce = z.infer<typeof UserRegisterSchemaServerResponce>;
+export type UserServerResponce = z.infer<typeof UserSchemaServerResponce>;
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
 export type UserCreated = z.infer<typeof CreatedUserSchema>;
 
