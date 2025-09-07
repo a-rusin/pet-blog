@@ -3,6 +3,9 @@ import { z } from "zod";
 export const articlesSchema = z.object({
   id: z.string(),
   title: z.string(),
+  description: z.string(),
+  authorId: z.string(),
+  createdAt: z.string(),
 });
 
 // @ts-ignore

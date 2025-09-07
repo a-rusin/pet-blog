@@ -1,7 +1,8 @@
 import axios from "axios";
+import { apiUrls } from "../configs/apiUrl";
 
 export const http = axios.create({
-  baseURL: "https://blog-dfb94-default-rtdb.firebaseio.com/",
+  baseURL: apiUrls.baseURL,
 });
 
 http.interceptors.request.use(
@@ -14,16 +15,36 @@ http.interceptors.request.use(
   }
 );
 
-http.interceptors.response.use(
-  function onFulfilled(response) {
-    const data = response.data;
-    const updatedData = [];
+const covertToArray = (data: any) => {
+  let result = [];
 
+  if (typeof data === "object" && !Array.isArray(data)) {
     for (const key in data) {
-      updatedData.push(data[key]);
+      if (data[key] && data[key].id && data[key].id === key) {
+        const updatedData: any = {};
+        for (const j in data[key]) {
+          if (data[key][j] && typeof data[key][j] === "object" && !Array.isArray(data[key][j])) {
+            const updatedPropValue = covertToArray(data[key][j]);
+            updatedData[j] = updatedPropValue;
+          } else {
+            updatedData[j] = data[key][j];
+          }
+        }
+        result.push(updatedData);
+      } else {
+        result = data;
+      }
     }
 
-    response.data = updatedData;
+    return result;
+  } else {
+    return data;
+  }
+};
+
+http.interceptors.response.use(
+  function onFulfilled(response) {
+    response.data = covertToArray(response.data);
 
     return response;
   },

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { routes } from "../../configs/routes";
+import { Article as IArticle } from "../../types/Article";
 
-export const Article = () => {
+export const Article: React.FC<IArticle> = ({ description, title }) => {
   return (
     <li className="w-96">
       <div className="relative">
@@ -20,7 +21,7 @@ export const Article = () => {
           to={routes.article("1")}
           className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid"
         >
-          Photography, the best hobby to have, Express yourself.
+          {title}
         </Link>
         <ul className="flex gap-4 pt-4 items-center">
           <li className="flex gap-1 items-center">
@@ -36,10 +37,7 @@ export const Article = () => {
             1K shares
           </li>
         </ul>
-        <p className="font-light text-base text-black/50 pt-4">
-          Aenean eleifend ante maecenas pulvinar montes lorem et pede dis dolor pretium donec dictum. Vici consequat
-          justo enim. Venenatis eget adipiscing luctus lorem.
-        </p>
+        <p className="font-light text-base text-black/50 pt-4">{description}</p>
         <div className=" text-black/50 text-base mt-4">Likes / Comments</div>
       </div>
     </li>
