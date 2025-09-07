@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 import { routes } from "../configs/routes";
-import { useAppSelector } from "../types/store";
+import { useAppDispatch, useAppSelector } from "../types/store";
+import { clearAuthLocalStorage, logout } from "../store/authSlice";
+import { toast } from "react-toastify";
 
 export const Header = () => {
   const { user, isLoading } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  const handleClickLogout = () => {
+    toast.success("Successful logout");
+    clearAuthLocalStorage();
+    dispatch(logout());
+  };
 
   return (
     <header className="container">
@@ -12,10 +21,15 @@ export const Header = () => {
           My Blog
         </Link>
         {isLoading ? (
-          <div className="font-light text-black/50 text-xl ">Logining...</div>
+          <div className="font-light text-black/25 text-xl ">Logining...</div>
         ) : user ? (
-          <div className="font-light text-black/50 text-xl ">
-            Hello, <span className="underline decoration-solid">{user.login}</span>!
+          <div className="flex gap-2 font-light text-black/50 text-xl">
+            <div>
+              Hello, <span className="underline decoration-solid">{user.login}</span>!
+            </div>
+            <div className="cursor-pointer text-red-600 font-bold" onClick={handleClickLogout}>
+              Logout
+            </div>
           </div>
         ) : (
           <Link to={routes.login} className="font-light text-black/50 text-xl hover:underline hover:decoration-solid">

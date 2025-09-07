@@ -27,7 +27,13 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.user = null;
+      state.errors = null;
+      state.isLoading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state) => {
@@ -66,14 +72,14 @@ export const authSlice = createSlice({
   },
 });
 
-const setLocalStorage = (data: UserServerResponce) => {
+export const setAuthLocalStorage = (data: UserServerResponce) => {
   localStorageService.set(LOCAL_STORAGE_USER_ID, data.localId);
   localStorageService.set(LOCAL_STORAGE_ACCESS_TOKEN, data.idToken);
   localStorageService.set(LOCAL_STORAGE_REFRESH_TOKEN, data.refreshToken);
   localStorageService.set(LOCAL_STORAGE_EXPIRES_IN_TOKEN, data.expiresIn);
 };
 
-const clearLocalStorage = () => {
+export const clearAuthLocalStorage = () => {
   localStorageService.remove(LOCAL_STORAGE_USER_ID);
   localStorageService.remove(LOCAL_STORAGE_ACCESS_TOKEN);
   localStorageService.remove(LOCAL_STORAGE_REFRESH_TOKEN);
@@ -115,7 +121,7 @@ export const login = createAsyncThunk(
 
       await dispatch(getUser(data.localId));
 
-      setLocalStorage(data);
+      setAuthLocalStorage(data);
 
       onSuccess();
       toast.success("Successful login");
@@ -137,7 +143,7 @@ export const getUser = createAsyncThunk(
 
       return userInfo;
     } catch (error: unknown) {
-      clearLocalStorage();
+      clearAuthLocalStorage();
       const errorMsg = errorHandler(error);
       return rejectWithValue(errorMsg);
     }
@@ -145,3 +151,4 @@ export const getUser = createAsyncThunk(
 );
 
 export const authReducer = authSlice.reducer;
+export const { logout } = authSlice.actions;

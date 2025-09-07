@@ -1,10 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginForm } from "../components/LoginForm";
 import { LoginFormType } from "../types/LoginForm";
 import { RegisterForm } from "../components/RegisterForm";
+import { useAppSelector } from "../types/store";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   const [formType, setFormType] = useState<LoginFormType>(LoginFormType.login);
+  const { user } = useAppSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user)
+      navigate("/", {
+        replace: true,
+      });
+  }, [user]);
 
   const changeForm = () => {
     if (formType === LoginFormType.login) {
