@@ -9,6 +9,8 @@ export const UserRegisterSchema = z.object({
     .min(6, { message: "The password must be at least 6 characters long." }),
 });
 
+export const CreatedUserSchema = UserRegisterSchema.omit({ password: true }).extend({ id: z.string });
+
 export const UserRegisterSchemaServerResponce = z.object({
   idToken: z.string(),
   email: z.string(),
@@ -27,5 +29,6 @@ export const UserLoginSchema = z.object({
 
 export type UserRegisterServerResponce = z.infer<typeof UserRegisterSchemaServerResponce>;
 export type UserRegister = z.infer<typeof UserRegisterSchema>;
+export type UserCreated = z.infer<typeof CreatedUserSchema>;
 
 export type UserLogin = z.infer<typeof UserLoginSchema>;
