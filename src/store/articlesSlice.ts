@@ -13,7 +13,7 @@ interface ArticleState {
 const initialState: ArticleState = {
   entities: [],
   errors: null,
-  isLoading: false,
+  isLoading: true,
 };
 
 const articlesSlice = createSlice({

@@ -1,17 +1,9 @@
-import { useEffect } from "react";
 import { Article } from ".";
-import { useAppDispatch } from "../../types/store";
-import { fetchAllArticles } from "../../store/articlesSlice";
 import { useAppSelector } from "../../types/store";
 import { Skeleton } from "../Skeleton";
 
 export const ArticlesList = () => {
   const { entities: articles, errors, isLoading } = useAppSelector((store) => store.articles);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchAllArticles());
-  }, []);
 
   if (isLoading) {
     return (
