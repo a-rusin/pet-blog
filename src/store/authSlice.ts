@@ -10,6 +10,7 @@ import {
   LOCAL_STORAGE_EXPIRES_IN_TOKEN,
   LOCAL_STORAGE_REFRESH_TOKEN,
   LOCAL_STORAGE_USER_ID,
+  USER_DEFAULT_AVATAR_IMAGE_URL,
 } from "../consts/auth";
 
 interface AuthState {
@@ -97,6 +98,7 @@ export const register = createAsyncThunk(
       const newUser: User = {
         id: data.localId,
         ...userWithourPassword,
+        avatarUrl: USER_DEFAULT_AVATAR_IMAGE_URL,
       };
       const createdUser = await authService.createUser(newUser);
       CreatedUserSchema.parse(createdUser);
