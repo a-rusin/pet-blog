@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/pet-blog/static/css/main.8d0a50e7.css",
-    "main.js": "/pet-blog/static/js/main.a540b357.js",
+    "main.css": "/pet-blog/static/css/main.f477c4a7.css",
+    "main.js": "/pet-blog/static/js/main.250c7602.js",
     "static/media/Cabinet-Grotesk-Variable.woff2": "/pet-blog/static/media/Cabinet-Grotesk-Variable.625aff7cd2cc651382da.woff2",
     "static/media/Cabinet-Grotesk-Variable.woff": "/pet-blog/static/media/Cabinet-Grotesk-Variable.f97ddfcb6ef6cf96db73.woff",
     "static/media/Cabinet-Grotesk-Regular.woff": "/pet-blog/static/media/Cabinet-Grotesk-Regular.e0ca6694b3d147865d38.woff",
     "static/media/Cabinet-Grotesk-Regular.woff2": "/pet-blog/static/media/Cabinet-Grotesk-Regular.467bcdaa2530ea758403.woff2",
     "index.html": "/pet-blog/index.html",
-    "main.8d0a50e7.css.map": "/pet-blog/static/css/main.8d0a50e7.css.map",
-    "main.a540b357.js.map": "/pet-blog/static/js/main.a540b357.js.map"
+    "main.f477c4a7.css.map": "/pet-blog/static/css/main.f477c4a7.css.map",
+    "main.250c7602.js.map": "/pet-blog/static/js/main.250c7602.js.map"
   },
   "entrypoints": [
-    "static/css/main.8d0a50e7.css",
-    "static/js/main.a540b357.js"
+    "static/css/main.f477c4a7.css",
+    "static/js/main.250c7602.js"
   ]
 }
