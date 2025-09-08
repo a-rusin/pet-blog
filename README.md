@@ -2,6 +2,11 @@
 
 This is repository of pet blog project.
 
+# Demo
+
+- Development URL: https://a-rusin.github.io/pet-blog/#/
+- Production URL: https://aarusin.ru/
+
 ## Using
 
 Libs and technics:

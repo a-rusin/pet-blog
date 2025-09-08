@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/*" element={<MainRoutes />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" pauseOnHover={false} theme="dark" />
     </>
   );
 }

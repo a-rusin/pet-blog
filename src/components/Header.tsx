@@ -1,19 +1,24 @@
 import { Link } from "react-router-dom";
 import { routes } from "../configs/routes";
-import { useAppDispatch, useAppSelector } from "../types/store";
-import { clearAuthLocalStorage, logout } from "../store/authSlice";
-import { toast } from "react-toastify";
+import { useAppSelector } from "../types/store";
 import { Skeleton } from "./Skeleton";
+import { UserHeader } from "./UserHeader";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
   const { user, isLoading } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
 
-  const handleClickLogout = () => {
-    toast.success("Successful logout");
-    clearAuthLocalStorage();
-    dispatch(logout());
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const openUserMenu = () => {
+    setIsUserMenuOpen(true);
   };
+
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      setIsUserMenuOpen(false);
+    });
+  }, []);
 
   return (
     <header className="container">
@@ -24,14 +29,7 @@ export const Header = () => {
         {isLoading ? (
           <Skeleton classNames="h-10 basis-[125px] rounded-md shrink" />
         ) : user ? (
-          <div className="flex gap-2 font-light text-black/50 text-xl">
-            <div>
-              Hello, <span className="underline decoration-solid">{user.login}</span>!
-            </div>
-            <div className="cursor-pointer text-red-600 font-bold" onClick={handleClickLogout}>
-              Logout
-            </div>
-          </div>
+          <UserHeader isUserMenuOpen={isUserMenuOpen} openUserMenu={openUserMenu} />
         ) : (
           <Link to={routes.login} className="font-light text-black/50 text-xl hover:underline hover:decoration-solid">
             Login
