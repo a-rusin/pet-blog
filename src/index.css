@@ -34,4 +34,18 @@
   .error-msg-login-form {
     @apply text-red-600 font-bold text-sm pt-1;
   }
+
+  .skeleton-animation {
+    background: linear-gradient(90deg, #e7e7e7 25%, #c0c0c0 50%, #e7e7e7 75%);
+    background-size: 200% 100%;
+    animation: skeleton-animation 1.5s linear infinite;
+  }
+}
+@keyframes skeleton-animation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

@@ -3,6 +3,7 @@ import { Article } from ".";
 import { useAppDispatch } from "../../types/store";
 import { fetchAllArticles } from "../../store/articlesSlice";
 import { useAppSelector } from "../../types/store";
+import { Skeleton } from "../Skeleton";
 
 export const ArticlesList = () => {
   const { entities: articles, errors, isLoading } = useAppSelector((store) => store.articles);
@@ -13,7 +14,13 @@ export const ArticlesList = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="text-center text-2xl container pt-20">Loading...</div>;
+    return (
+      <ul className="flex gap-4 pt-20 container">
+        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
+        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
+        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
+      </ul>
+    );
   }
 
   if (errors) {
@@ -31,7 +38,7 @@ export const ArticlesList = () => {
 
   return (
     <>
-      <ul className="flex gap-4 pt-20 flex-wrap container">
+      <ul className="flex gap-4 pt-20 container">
         {articles.map((article) => (
           <Article key={article.id} article={article} />
         ))}

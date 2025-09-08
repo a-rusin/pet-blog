@@ -46,7 +46,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
   };
 
   return (
-    <li className="w-96">
+    <li className="basis-1/3 shrink">
       <div className="relative">
         <img
           src="https://avatars.mds.yandex.net/get-lpc/12602567/6cbfdbd7-3c7d-4e91-89a4-2e364a7ef01b/orig?width=768&height=660"

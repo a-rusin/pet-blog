@@ -3,6 +3,7 @@ import { routes } from "../configs/routes";
 import { useAppDispatch, useAppSelector } from "../types/store";
 import { clearAuthLocalStorage, logout } from "../store/authSlice";
 import { toast } from "react-toastify";
+import { Skeleton } from "./Skeleton";
 
 export const Header = () => {
   const { user, isLoading } = useAppSelector((state) => state.auth);
@@ -21,7 +22,7 @@ export const Header = () => {
           My Blog
         </Link>
         {isLoading ? (
-          <div className="font-light text-black/25 text-xl ">Logining...</div>
+          <Skeleton classNames="h-10 basis-[125px] rounded-md shrink" />
         ) : user ? (
           <div className="flex gap-2 font-light text-black/50 text-xl">
             <div>
