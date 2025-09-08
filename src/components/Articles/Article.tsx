@@ -3,6 +3,8 @@ import { routes } from "../../configs/routes";
 import { Article as IArticle } from "../../types/Article";
 import { useAppDispatch, useAppSelector } from "../../types/store";
 import { updateArticle } from "../../store/articlesSlice";
+import { FaRegHeart } from "react-icons/fa6";
+import { IoHeart } from "react-icons/io5";
 
 export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
   const dispatch = useAppDispatch();
@@ -16,6 +18,12 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
       views: [...article.views, newViewersId],
     };
     dispatch(updateArticle(updatedArticle));
+  };
+
+  const isLikedByCurrentUser = (): boolean => {
+    if (!user) return false;
+
+    return article.likes.includes(user.id);
   };
 
   return (
@@ -54,7 +62,22 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
           </li>
         </ul>
         <p className="font-light text-base text-black/50 pt-4">{article.description}</p>
-        <div className=" text-black/50 text-base mt-4">Likes / Comments / Views: {article.views.length}</div>
+        <div className="text-black/50 text-base mt-4 flex gap-2">
+          <div className="flex gap-1 items-center cursor-pointer">
+            <div className="like-icon">
+              {isLikedByCurrentUser() ? (
+                <IoHeart style={{ width: "14px", height: "14px" }} color="red" />
+              ) : (
+                <FaRegHeart style={{ width: "14px", height: "14px" }} />
+              )}
+            </div>
+            {article.likes.length}
+          </div>
+          <div>|</div>
+          <div>Comments</div>
+          <div>|</div>
+          <div>Views: {article.views.length}</div>
+        </div>
       </div>
     </li>
   );
