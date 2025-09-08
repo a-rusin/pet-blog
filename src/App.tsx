@@ -7,6 +7,7 @@ import { localStorageService } from "./services/localStorage.service";
 import { LOCAL_STORAGE_USER_ID } from "./consts/auth";
 import { getUser } from "./store/authSlice";
 import { fetchAllArticles } from "./store/articlesSlice";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/*" element={<MainRoutes />} />
       </Routes>

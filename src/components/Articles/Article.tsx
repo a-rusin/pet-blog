@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 import { routes } from "../../configs/routes";
-import { Article as IArticle } from "../../types/Article";
+import { ArticleClient } from "../../types/Article";
 import { useAppDispatch, useAppSelector } from "../../types/store";
 import { updateArticle } from "../../store/articlesSlice";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoHeart, IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 
-export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
+export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
   const handleClickView = () => {
     const newViewersId: string = user ? user.id : "guest";
 
-    const updatedArticle: IArticle = {
+    const updatedArticle: ArticleClient = {
       ...article,
       views: [...article.views, newViewersId],
     };
@@ -37,7 +37,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
       ? article.likes.filter((like) => like !== user.id)
       : [...article.likes, user.id];
 
-    const updatedArticles: IArticle = {
+    const updatedArticles: ArticleClient = {
       ...article,
       likes: updatedLikes,
     };
@@ -54,8 +54,11 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
           className="w-full"
         />
         <ul className="absolute top-4 left-4 flex gap-1">
-          <li className="article-tags">Photography</li>
-          <li className="article-tags">Abstract</li>
+          {article.tags.map((tag) => (
+            <li key={tag} className="article-tags ">
+              {tag}
+            </li>
+          ))}
         </ul>
       </div>
       <div>
@@ -68,14 +71,10 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
         </Link>
         <ul className="flex gap-4 pt-4 items-center">
           <li className="flex gap-1 items-center">
-            <img
-              src="https://avatars.mds.yandex.net/get-lpc/12602567/d920d2ed-4c69-4062-8e06-f61cefd46536/orig?width=64&height=64"
-              alt="Автарака"
-              className="w-8 rounded-full"
-            />
-            <p className="font-light text-base">Paris Washington</p>
+            <img src={article.author.avatarUrl} alt="Автарака" className="w-8 rounded-full" />
+            <p className="font-light text-base">{article.author.login}</p>
           </li>
-          <li className="font-light text-base text-black/50">June 28, 2018</li>
+          <li className="font-light text-base text-black/50">{article.createdAt}</li>
         </ul>
         <p className="font-light text-base text-black/50 pt-4">{article.description}</p>
         <div className="text-black/50 text-base mt-4 flex gap-2">
