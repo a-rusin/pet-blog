@@ -4,13 +4,14 @@ import { Article as IArticle } from "../../types/Article";
 import { useAppDispatch, useAppSelector } from "../../types/store";
 import { updateArticle } from "../../store/articlesSlice";
 import { FaRegHeart } from "react-icons/fa6";
-import { IoHeart } from "react-icons/io5";
+import { IoHeart, IoEyeSharp } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  const handleClick = () => {
+  const handleClickView = () => {
     const newViewersId: string = user ? user.id : "guest";
 
     const updatedArticle: IArticle = {
@@ -24,6 +25,24 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
     if (!user) return false;
 
     return article.likes.includes(user.id);
+  };
+
+  const handleLikeClick = () => {
+    if (!user) {
+      toast.error("You need login to liked articles");
+      return;
+    }
+
+    const updatedLikes = isLikedByCurrentUser()
+      ? article.likes.filter((like) => like !== user.id)
+      : [...article.likes, user.id];
+
+    const updatedArticles: IArticle = {
+      ...article,
+      likes: updatedLikes,
+    };
+
+    dispatch(updateArticle(updatedArticles));
   };
 
   return (
@@ -43,7 +62,7 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
         <Link
           to={routes.article(article.id)}
           className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid"
-          onClick={handleClick}
+          onClick={handleClickView}
         >
           {article.title}
         </Link>
@@ -57,26 +76,26 @@ export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
             <p className="font-light text-base">Paris Washington</p>
           </li>
           <li className="font-light text-base text-black/50">June 28, 2018</li>
-          <li className="font-light text-base text-black/50 pl-5 bg-share-icon bg-left bg-no-repeat bg-[length:15px]">
-            1K shares
-          </li>
         </ul>
         <p className="font-light text-base text-black/50 pt-4">{article.description}</p>
         <div className="text-black/50 text-base mt-4 flex gap-2">
-          <div className="flex gap-1 items-center cursor-pointer">
-            <div className="like-icon">
+          <div className="flex gap-1 items-center cursor-pointer" onClick={handleLikeClick}>
+            <div>
               {isLikedByCurrentUser() ? (
-                <IoHeart style={{ width: "14px", height: "14px" }} color="red" />
+                <IoHeart style={{ width: "16px", height: "16px" }} color="red" className="relative bottom-[1px]" />
               ) : (
-                <FaRegHeart style={{ width: "14px", height: "14px" }} />
+                <FaRegHeart style={{ width: "16px", height: "16px" }} className="relative bottom-[1px]" />
               )}
             </div>
-            {article.likes.length}
+            <div>{article.likes.length}</div>
           </div>
           <div>|</div>
           <div>Comments</div>
           <div>|</div>
-          <div>Views: {article.views.length}</div>
+          <div className="flex gap-1 items-center ">
+            <IoEyeSharp style={{ width: "16px", height: "16px" }} className="relative bottom-[1px]" />{" "}
+            <div>{article.views.length}</div>
+          </div>
         </div>
       </div>
     </li>
