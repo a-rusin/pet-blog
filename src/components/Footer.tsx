@@ -1,3 +1,5 @@
+import { FooterForm } from "./FooterForm";
+
 export const Footer = () => {
   return (
     <footer className="mt-20">
@@ -8,15 +10,7 @@ export const Footer = () => {
           <p className="pt-8 text-white/50 text-xl ">
             Subscribe to learn about new product features, the latest in technology, solutions, and updates.
           </p>
-          <div className="flex gap-2 pt-10 pb-20">
-            <input
-              type="text"
-              name="email2"
-              placeholder="Enter your email"
-              className="rounded-md block grow py-3 px-4 text-black focus-visible:border-0 focus-visible:outline-none"
-            />
-            <button className="basis-24 py-3 px-4">Subscribe</button>
-          </div>
+          <FooterForm />
         </div>
       </section>
       <section className="container py-10 flex justify-between border-t-2 border-black/10 mt-20 text-black/50 text-sm">
