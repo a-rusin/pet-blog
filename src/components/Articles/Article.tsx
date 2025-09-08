@@ -1,8 +1,23 @@
 import { Link } from "react-router-dom";
 import { routes } from "../../configs/routes";
 import { Article as IArticle } from "../../types/Article";
+import { useAppDispatch, useAppSelector } from "../../types/store";
+import { updateArticle } from "../../store/articlesSlice";
 
-export const Article: React.FC<IArticle> = ({ description, title }) => {
+export const Article: React.FC<{ article: IArticle }> = ({ article }) => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  const handleClick = () => {
+    const newViewersId: string = user ? user.id : "guest";
+
+    const updatedArticle: IArticle = {
+      ...article,
+      views: [...article.views, newViewersId],
+    };
+    dispatch(updateArticle(updatedArticle));
+  };
+
   return (
     <li className="w-96">
       <div className="relative">
@@ -18,10 +33,11 @@ export const Article: React.FC<IArticle> = ({ description, title }) => {
       </div>
       <div>
         <Link
-          to={routes.article("1")}
+          to={routes.article(article.id)}
           className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid"
+          onClick={handleClick}
         >
-          {title}
+          {article.title}
         </Link>
         <ul className="flex gap-4 pt-4 items-center">
           <li className="flex gap-1 items-center">
@@ -37,8 +53,8 @@ export const Article: React.FC<IArticle> = ({ description, title }) => {
             1K shares
           </li>
         </ul>
-        <p className="font-light text-base text-black/50 pt-4">{description}</p>
-        <div className=" text-black/50 text-base mt-4">Likes / Comments</div>
+        <p className="font-light text-base text-black/50 pt-4">{article.description}</p>
+        <div className=" text-black/50 text-base mt-4">Likes / Comments / Views: {article.views.length}</div>
       </div>
     </li>
   );

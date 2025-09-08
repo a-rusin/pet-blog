@@ -14,9 +14,9 @@ export const articlesService = {
     const { data } = await http.get<Article>(url);
     return data;
   },
-  create: async (payload: Article) => {
+  createAndUpdate: async (payload: Article) => {
     const url = `${apiUrls.articles}/${payload.id}`;
-    const { data } = await http.put(url, payload);
+    const { data } = await http.put<Article>(url, payload);
     return data;
   },
 };

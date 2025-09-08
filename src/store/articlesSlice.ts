@@ -32,6 +32,10 @@ const articlesSlice = createSlice({
       .addCase(fetchAllArticles.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.errors = action.payload;
+      })
+      .addCase(updateArticle.fulfilled, (state, action: PayloadAction<Article>) => {
+        state.entities =
+          state.entities && state.entities.map((item) => (item.id === action.payload.id ? action.payload : item));
       });
   },
 });
@@ -41,6 +45,16 @@ export const fetchAllArticles = createAsyncThunk("articles/fetchAll", async (_, 
     const data = await articlesService.getAll();
     const articlesData = articlesArraySchema.parse(data);
     return articlesData;
+  } catch (error: unknown) {
+    const errorMsg = errorHandler(error);
+    return rejectWithValue(errorMsg);
+  }
+});
+
+export const updateArticle = createAsyncThunk("articles/update", async (payload: Article, { rejectWithValue }) => {
+  try {
+    const data = await articlesService.createAndUpdate(payload);
+    return data;
   } catch (error: unknown) {
     const errorMsg = errorHandler(error);
     return rejectWithValue(errorMsg);
