@@ -36,10 +36,7 @@ const articlesSlice = createSlice({
         state.errors = action.payload;
       })
       .addCase(createUpdateArticle.fulfilled, (state, action: PayloadAction<ArticleClient>) => {
-        // console.log(action, state.entities);
-
         const isExist = state.entities?.find((item) => item.id === action.payload.id);
-
         if (isExist) {
           state.entities =
             state.entities && state.entities.map((item) => (item.id === action.payload.id ? action.payload : item));

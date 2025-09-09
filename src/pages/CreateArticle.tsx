@@ -22,7 +22,6 @@ export const CreateArticle = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ArticleCreateUpdateForm> = (payload) => {
-    // console.log(payload);
     const updatedData: ArticleClient = {
       ...payload,
       id: nanoid(),
@@ -32,7 +31,6 @@ export const CreateArticle = () => {
       views: undefined,
       tags: payload.tags.split(","),
     };
-    // console.log(updatedData);
     dispatch(
       createUpdateArticle({
         payload: updatedData,
@@ -84,10 +82,14 @@ export const CreateArticle = () => {
         </div>
         <div>
           <label htmlFor="fullText" className="block text-lg font-medium ">
-            Full text:
+            Full text <strong>(can use HTML mark up)</strong>:
           </label>
           <div className="mt-2">
-            <input id="fullText" type="text" className={inputClasses("fullText")} {...register("fullText")} />
+            <textarea
+              id="fullText"
+              className={inputClasses("fullText") + " resize-none h-40"}
+              {...register("fullText")}
+            />
           </div>
           {errors.fullText && <div className="error-msg-login-form">{errors.fullText.message}</div>}
         </div>

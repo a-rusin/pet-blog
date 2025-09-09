@@ -5,10 +5,12 @@ import { UserLogin, UserLoginSchema } from "../types/Auth";
 import classNames from "classnames";
 import { useAppSelector } from "../types/store";
 import { login } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const { errors: errorsResponce, isLoading } = useAppSelector((state) => state.auth);
+
+  const location = useLocation();
 
   const {
     register,
@@ -29,7 +31,8 @@ export const LoginForm = () => {
           returnSecureToken: true,
         },
         onSuccess: () => {
-          navigate("/", {
+          const goTo = location.state?.from || "/";
+          navigate(goTo, {
             replace: true,
           });
         },
