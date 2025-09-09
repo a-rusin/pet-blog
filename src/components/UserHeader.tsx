@@ -5,6 +5,8 @@ import { RiArrowDownSLine } from "react-icons/ri";
 import { MdExitToApp } from "react-icons/md";
 import { MdOutlineArticle } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../configs/routes";
 
 interface Props {
   isUserMenuOpen: boolean;
@@ -15,16 +17,24 @@ export const UserHeader: React.FC<Props> = ({ isUserMenuOpen, openUserMenu }) =>
   const { user } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleClickLogout = () => {
     toast.success("Successful logout");
     clearAuthLocalStorage();
     dispatch(logout());
+    navigate("/", {
+      replace: true,
+    });
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     openUserMenu();
+  };
+
+  const handleClickCreateArticle = () => {
+    navigate(routes.createArticle(true));
   };
 
   return (
@@ -42,7 +52,10 @@ export const UserHeader: React.FC<Props> = ({ isUserMenuOpen, openUserMenu }) =>
               My articles <i>(IN DEV)</i>
             </span>
           </li>
-          <li className="cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center">
+          <li
+            className="cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center"
+            onClick={handleClickCreateArticle}
+          >
             <IoMdAddCircleOutline style={{ width: "18px", height: "18px" }} />
             <span>
               Create article <i>(IN DEV)</i>
