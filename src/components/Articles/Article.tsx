@@ -6,6 +6,7 @@ import { createUpdateArticle } from "../../store/articlesSlice";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoHeart, IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { convertDate } from "../../utils/convertDate";
 
 export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
   const dispatch = useAppDispatch();
@@ -76,7 +77,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
             <img src={article.author.avatarUrl} alt="Автарака" className="w-8 rounded-full" />
             <p className="font-light text-base">{article.author.login}</p>
           </li>
-          <li className="font-light text-base text-black/50">{article.createdAt}</li>
+          <li className="font-light text-base text-black/50">{convertDate.toClient(article.createdAt)}</li>
         </ul>
         <p className="font-light text-base text-black/50 pt-4 min-h-[140px]">{article.description}</p>
         <div className="text-black/50 text-base mt-4 flex gap-2">

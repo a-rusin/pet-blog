@@ -27,7 +27,7 @@ export const CreateArticle = () => {
       ...payload,
       id: nanoid(),
       author: user!,
-      createdAt: "June 28, 2018", // timeless for dev: todo
+      createdAt: new Date().toISOString(),
       likes: undefined,
       views: undefined,
       tags: payload.tags.split(","),

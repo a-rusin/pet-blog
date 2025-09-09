@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../types/store";
 import { toast } from "react-toastify";
 import { Skeleton } from "../components/Skeleton";
+import { convertDate } from "../utils/convertDate";
 
 type ParamsType = {
   id: string;
@@ -52,7 +53,7 @@ export const Article = () => {
         ))}
       </ul>
       <h2 className="text-5xl font-cabinet-grotesk-variable pt-8">{article.title}</h2>
-      <div className="text-black/50 pt-4 text-lg">{article.createdAt} </div>
+      <div className="text-black/50 pt-4 text-lg">{convertDate.toClient(article.createdAt)} </div>
       <img src="#" className="h-96 bg-black/15 rounded-md block mt-8" alt="Картинка" />
       <div className="flex gap-4 items-center pt-10">
         <img src={article.author.avatarUrl} alt="Автарака" className="w-12 rounded-full" />
