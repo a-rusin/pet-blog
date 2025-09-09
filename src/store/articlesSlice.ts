@@ -36,8 +36,16 @@ const articlesSlice = createSlice({
         state.errors = action.payload;
       })
       .addCase(createUpdateArticle.fulfilled, (state, action: PayloadAction<ArticleClient>) => {
-        state.entities =
-          state.entities && state.entities.map((item) => (item.id === action.payload.id ? action.payload : item));
+        // console.log(action, state.entities);
+
+        const isExist = state.entities?.find((item) => item.id === action.payload.id);
+
+        if (isExist) {
+          state.entities =
+            state.entities && state.entities.map((item) => (item.id === action.payload.id ? action.payload : item));
+        } else {
+          state.entities?.push(action.payload);
+        }
       });
   },
 });
@@ -90,7 +98,7 @@ const prepareToClient = async (
 
 export const createUpdateArticle = createAsyncThunk(
   "articles/createUpdate",
-  async (payload: ArticleClient, { rejectWithValue }) => {
+  async ({ payload, cb }: { payload: ArticleClient; cb?: () => void }, { rejectWithValue }) => {
     try {
       const serverData: ArticleServer = {
         ...payload,
@@ -98,6 +106,8 @@ export const createUpdateArticle = createAsyncThunk(
       };
       const data: ArticleServer = await articlesService.createAndUpdate(serverData);
       articlesSchemaServer.parse(data);
+
+      if (cb) cb();
 
       return payload;
     } catch (error: unknown) {

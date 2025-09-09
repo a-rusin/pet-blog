@@ -5,6 +5,8 @@ import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../types/store";
 import { createUpdateArticle } from "../store/articlesSlice";
 import { nanoid } from "nanoid";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const CreateArticle = () => {
   const {
@@ -17,6 +19,7 @@ export const CreateArticle = () => {
 
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<ArticleCreateUpdateForm> = (payload) => {
     // console.log(payload);
@@ -30,7 +33,15 @@ export const CreateArticle = () => {
       tags: payload.tags.split(","),
     };
     // console.log(updatedData);
-    dispatch(createUpdateArticle(updatedData));
+    dispatch(
+      createUpdateArticle({
+        payload: updatedData,
+        cb: () => {
+          toast.success("Article success created!");
+          navigate("/");
+        },
+      })
+    );
   };
 
   const inputClasses = (inputName: keyof ArticleCreateUpdateForm) =>

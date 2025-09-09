@@ -30,7 +30,7 @@ export const ArticlesList = () => {
 
   return (
     <>
-      <ul className="flex gap-4 pt-20 container">
+      <ul className="flex flex-wrap gap-4 pt-20 container">
         {articles.map((article) => (
           <Article key={article.id} article={article} />
         ))}

@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { CreatedUserSchema } from "./Auth";
-import { title } from "process";
 
 // @ts-ignore
 export const viewsScheme = z.union([z.array(z.string()), z.undefined()]);

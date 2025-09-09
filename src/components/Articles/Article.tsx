@@ -18,7 +18,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
       ...article,
       views: article.views ? [...article.views, newViewersId] : [newViewersId],
     };
-    dispatch(createUpdateArticle(updatedArticle));
+    dispatch(createUpdateArticle({ payload: updatedArticle }));
   };
 
   const isLikedByCurrentUser = (): boolean => {
@@ -43,18 +43,16 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
       updatedLikes.push(user.id);
     }
 
-    // if ()
-
     const updatedArticles: ArticleClient = {
       ...article,
       likes: updatedLikes,
     };
 
-    dispatch(createUpdateArticle(updatedArticles));
+    dispatch(createUpdateArticle({ payload: updatedArticles }));
   };
 
   return (
-    <li className="basis-1/3 shrink">
+    <li className="basis-[373px] shrink">
       <div className="relative">
         <img src="#" alt="Картинка" className="w-full h-[339px] bg-gray-500" />
         <ul className="absolute top-4 left-4 flex gap-1">
