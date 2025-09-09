@@ -1,7 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ArticleCreateUpdateForm, articlesSchemaCreateUpdateForm } from "../types/Article";
+import { ArticleClient, ArticleCreateUpdateForm, articlesSchemaCreateUpdateForm } from "../types/Article";
 import { zodResolver } from "@hookform/resolvers/zod";
 import classNames from "classnames";
+import { useAppDispatch, useAppSelector } from "../types/store";
+import { createUpdateArticle } from "../store/articlesSlice";
+import { nanoid } from "nanoid";
 
 export const CreateArticle = () => {
   const {
@@ -12,8 +15,22 @@ export const CreateArticle = () => {
     resolver: zodResolver(articlesSchemaCreateUpdateForm),
   });
 
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
   const onSubmit: SubmitHandler<ArticleCreateUpdateForm> = (payload) => {
-    console.log(payload);
+    // console.log(payload);
+    const updatedData: ArticleClient = {
+      ...payload,
+      id: nanoid(),
+      author: user!,
+      createdAt: "June 28, 2018", // timeless for dev: todo
+      likes: undefined,
+      views: undefined,
+      tags: payload.tags.split(","),
+    };
+    // console.log(updatedData);
+    dispatch(createUpdateArticle(updatedData));
   };
 
   const inputClasses = (inputName: keyof ArticleCreateUpdateForm) =>
@@ -34,7 +51,7 @@ export const CreateArticle = () => {
         </div>
         <div>
           <label htmlFor="tags" className="block text-lg font-medium ">
-            Tags:
+            Tags <strong>(separated by commas)</strong>:
           </label>
           <div className="mt-2">
             <input id="tags" type="text" className={inputClasses("tags")} {...register("tags")} />
@@ -46,7 +63,11 @@ export const CreateArticle = () => {
             Description:
           </label>
           <div className="mt-2">
-            <input id="description" type="text" className={inputClasses("description")} {...register("description")} />
+            <textarea
+              id="description"
+              className={inputClasses("description") + " resize-none h-40"}
+              {...register("description")}
+            />
           </div>
           {errors.description && <div className="error-msg-login-form">{errors.description.message}</div>}
         </div>

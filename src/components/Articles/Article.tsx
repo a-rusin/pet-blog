@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { routes } from "../../configs/routes";
 import { ArticleClient } from "../../types/Article";
 import { useAppDispatch, useAppSelector } from "../../types/store";
-import { updateArticle } from "../../store/articlesSlice";
+import { createUpdateArticle } from "../../store/articlesSlice";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoHeart, IoEyeSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
@@ -16,15 +16,15 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
 
     const updatedArticle: ArticleClient = {
       ...article,
-      views: [...article.views, newViewersId],
+      views: article.views ? [...article.views, newViewersId] : [newViewersId],
     };
-    dispatch(updateArticle(updatedArticle));
+    dispatch(createUpdateArticle(updatedArticle));
   };
 
   const isLikedByCurrentUser = (): boolean => {
     if (!user) return false;
 
-    return article.likes.includes(user.id);
+    return article.likes ? article.likes.includes(user.id) : false;
   };
 
   const handleLikeClick = () => {
@@ -33,26 +33,30 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
       return;
     }
 
-    const updatedLikes = isLikedByCurrentUser()
-      ? article.likes.filter((like) => like !== user.id)
-      : [...article.likes, user.id];
+    let updatedLikes: string[] = [];
+
+    if (article.likes) {
+      updatedLikes = isLikedByCurrentUser()
+        ? article.likes.filter((like: string) => like !== user.id)
+        : [...article.likes, user.id];
+    } else {
+      updatedLikes.push(user.id);
+    }
+
+    // if ()
 
     const updatedArticles: ArticleClient = {
       ...article,
       likes: updatedLikes,
     };
 
-    dispatch(updateArticle(updatedArticles));
+    dispatch(createUpdateArticle(updatedArticles));
   };
 
   return (
     <li className="basis-1/3 shrink">
       <div className="relative">
-        <img
-          src="https://avatars.mds.yandex.net/get-lpc/12602567/6cbfdbd7-3c7d-4e91-89a4-2e364a7ef01b/orig?width=768&height=660"
-          alt="Картинка"
-          className="w-full"
-        />
+        <img src="#" alt="Картинка" className="w-full h-[339px] bg-gray-500" />
         <ul className="absolute top-4 left-4 flex gap-1">
           {article.tags.map((tag) => (
             <li key={tag} className="article-tags ">
@@ -64,7 +68,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
       <div>
         <Link
           to={routes.article(article.id)}
-          className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid"
+          className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid min-h-[90px]"
           onClick={handleClickView}
         >
           {article.title}
@@ -76,7 +80,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
           </li>
           <li className="font-light text-base text-black/50">{article.createdAt}</li>
         </ul>
-        <p className="font-light text-base text-black/50 pt-4">{article.description}</p>
+        <p className="font-light text-base text-black/50 pt-4 min-h-[140px]">{article.description}</p>
         <div className="text-black/50 text-base mt-4 flex gap-2">
           <div className="flex gap-1 items-center cursor-pointer" onClick={handleLikeClick}>
             <div>
@@ -86,14 +90,14 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
                 <FaRegHeart style={{ width: "16px", height: "16px" }} className="relative bottom-[1px]" />
               )}
             </div>
-            <div>{article.likes.length}</div>
+            <div>{article.likes ? article.likes.length : 0}</div>
           </div>
           <div>|</div>
           <div>Comments</div>
           <div>|</div>
           <div className="flex gap-1 items-center ">
             <IoEyeSharp style={{ width: "16px", height: "16px" }} className="relative bottom-[1px]" />{" "}
-            <div>{article.views.length}</div>
+            <div>{article.views ? article.views.length : 0}</div>
           </div>
         </div>
       </div>

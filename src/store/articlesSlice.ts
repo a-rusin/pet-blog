@@ -35,7 +35,7 @@ const articlesSlice = createSlice({
         state.isLoading = false;
         state.errors = action.payload;
       })
-      .addCase(updateArticle.fulfilled, (state, action: PayloadAction<ArticleClient>) => {
+      .addCase(createUpdateArticle.fulfilled, (state, action: PayloadAction<ArticleClient>) => {
         state.entities =
           state.entities && state.entities.map((item) => (item.id === action.payload.id ? action.payload : item));
       });
@@ -88,8 +88,8 @@ const prepareToClient = async (
   return null;
 };
 
-export const updateArticle = createAsyncThunk(
-  "articles/update",
+export const createUpdateArticle = createAsyncThunk(
+  "articles/createUpdate",
   async (payload: ArticleClient, { rejectWithValue }) => {
     try {
       const serverData: ArticleServer = {

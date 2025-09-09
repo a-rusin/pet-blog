@@ -1,8 +1,11 @@
 import { z } from "zod";
 import { CreatedUserSchema } from "./Auth";
+import { title } from "process";
 
-export const viewsScheme = z.array(z.string());
-export const likesScheme = z.array(z.string());
+// @ts-ignore
+export const viewsScheme = z.union([z.array(z.string()), z.undefined()]);
+// @ts-ignore
+export const likesScheme = z.union([z.array(z.string()), z.undefined()]);
 
 export const articlesSchemaServer = z.object({
   id: z.string(),
@@ -16,15 +19,28 @@ export const articlesSchemaServer = z.object({
   fullText: z.string().nonempty(),
 });
 
-export const articlesSchemaClient = articlesSchemaServer.omit({ author: true }).extend({
+export const articlesSchemaClient = articlesSchemaServer.omit({ author: true, likes: true, views: true }).extend({
   author: CreatedUserSchema,
+  likes: viewsScheme,
+  views: likesScheme,
 });
 
 export const articlesSchemaCreateUpdateForm = articlesSchemaServer
-  .omit({ author: true, createdAt: true, id: true, likes: true, views: true, tags: true })
+  .omit({
+    author: true,
+    createdAt: true,
+    id: true,
+    likes: true,
+    views: true,
+    tags: true,
+    title: true,
+    description: true,
+  })
   .extend({
     id: z.string().optional(),
     tags: z.string().nonempty(),
+    title: z.string().nonempty().max(60),
+    description: z.string().nonempty().max(220),
   });
 
 // @ts-ignore

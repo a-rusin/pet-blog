@@ -57,9 +57,7 @@ export const UserHeader: React.FC<Props> = ({ isUserMenuOpen, openUserMenu }) =>
             onClick={handleClickCreateArticle}
           >
             <IoMdAddCircleOutline style={{ width: "18px", height: "18px" }} />
-            <span>
-              Create article <i>(IN DEV)</i>
-            </span>
+            <span>Create article</span>
           </li>
           <li
             className="cursor-pointer text-red-600 font-bold bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center"
