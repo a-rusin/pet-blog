@@ -21,7 +21,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   errors: null,
 };
 
@@ -32,6 +32,9 @@ export const authSlice = createSlice({
     logout(state) {
       state.user = null;
       state.errors = null;
+      state.isLoading = false;
+    },
+    resetAuthLoading(state) {
       state.isLoading = false;
     },
   },
@@ -153,4 +156,4 @@ export const getUser = createAsyncThunk(
 );
 
 export const authReducer = authSlice.reducer;
-export const { logout } = authSlice.actions;
+export const { logout, resetAuthLoading } = authSlice.actions;

@@ -1,6 +1,6 @@
 export const routes = {
   home: "/",
   login: "/login",
-  article: (str: string): string => `/article/${str}`,
-  createArticle: (isPathIncluded: boolean): string => (isPathIncluded ? "/article/create" : "/create"),
+  article: (str: string, directLink: boolean): string => (directLink ? str : `/article/${str}`),
+  user: (str: string, directLink: boolean): string => (directLink ? str : `/user/${str}`),
 };

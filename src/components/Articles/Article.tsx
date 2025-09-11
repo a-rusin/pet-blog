@@ -53,7 +53,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
   };
 
   return (
-    <li className="basis-[373px] shrink">
+    <li className="basis-[373px]">
       <div className="relative">
         <img src="#" alt="Картинка" className="w-full h-[339px] bg-gray-500" />
         <ul className="absolute top-4 left-4 flex gap-1">
@@ -66,7 +66,7 @@ export const Article: React.FC<{ article: ArticleClient }> = ({ article }) => {
       </div>
       <div>
         <Link
-          to={routes.article(article.id)}
+          to={routes.article(article.id, false)}
           className="block font-bold pt-6 text-2xl font-cabinet-grotesk-variable hover:underline hover:decoration-solid min-h-[90px]"
           onClick={handleClickView}
         >

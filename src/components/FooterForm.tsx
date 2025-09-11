@@ -59,11 +59,11 @@ export const FooterForm = () => {
     );
 
   if (isEmailSended) {
-    return <div className="text-center pt-10 pb-20">Thank you for email! We'll be in touch!</div>;
+    return <div className="text-center pt-10 pb-20 container">Thank you for email! We'll be in touch!</div>;
   }
 
   return (
-    <div className="pt-10 pb-20">
+    <div className="pt-10 pb-20 container">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" ">
           <div className="flex gap-2">

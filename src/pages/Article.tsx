@@ -29,7 +29,7 @@ export const Article = () => {
   if (errors) {
     return (
       <div className="text-center text-2xl container pt-20 text-red-800 font-bold">
-        Ooops! Some error, please try letter. <br />
+        Ooops! Some error, please try latter. <br />
         ErrorMessage: {errors}
       </div>
     );

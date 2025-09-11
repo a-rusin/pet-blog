@@ -34,7 +34,11 @@ export const UserHeader: React.FC<Props> = ({ isUserMenuOpen, openUserMenu }) =>
   };
 
   const handleClickCreateArticle = () => {
-    navigate(routes.createArticle(true));
+    navigate(routes.user("create-article", false));
+  };
+
+  const handleClickMyArticles = () => {
+    navigate(routes.user("my-articles", false));
   };
 
   return (
@@ -46,11 +50,12 @@ export const UserHeader: React.FC<Props> = ({ isUserMenuOpen, openUserMenu }) =>
       </div>
       {isUserMenuOpen && (
         <ul className=" absolute top-[calc(100%+10px)] right-0 w-56 text-black rounded-md overflow-hidden text-base">
-          <li className="cursor-not-allowed bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center">
+          <li
+            className="cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center"
+            onClick={handleClickMyArticles}
+          >
             <MdOutlineArticle style={{ width: "18px", height: "18px" }} />
-            <span>
-              My articles <i>(IN DEV)</i>
-            </span>
+            <span>My articles</span>
           </li>
           <li
             className="cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 flex gap-2 items-center"

@@ -19,4 +19,15 @@ export const articlesService = {
     const { data } = await http.put<ArticleServer>(url, payload);
     return data;
   },
+  getUserArticle: async (userId: string) => {
+    const url = apiUrls.articles;
+    const { data } = await http.get<ArticleServer[] | null>(url, {
+      params: {
+        orderBy: `"author"`,
+        equalTo: `"${userId}"`,
+      },
+    });
+
+    return data;
+  },
 };

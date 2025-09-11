@@ -5,7 +5,7 @@ import { useAppDispatch } from "./types/store";
 import { useEffect } from "react";
 import { localStorageService } from "./services/localStorage.service";
 import { LOCAL_STORAGE_USER_ID } from "./consts/auth";
-import { getUser } from "./store/authSlice";
+import { getUser, resetAuthLoading } from "./store/authSlice";
 import { fetchAllArticles } from "./store/articlesSlice";
 import ScrollToTop from "./utils/ScrollToTop";
 
@@ -16,6 +16,8 @@ function App() {
     const userId = localStorageService.get(LOCAL_STORAGE_USER_ID);
     if (userId) {
       dispatch(getUser(userId));
+    } else {
+      dispatch(resetAuthLoading());
     }
 
     dispatch(fetchAllArticles());

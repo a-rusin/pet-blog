@@ -7,10 +7,10 @@ export const ArticlesList = () => {
 
   if (isLoading) {
     return (
-      <ul className="flex gap-4 pt-20 container">
-        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
-        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
-        <Skeleton classNames="h-[590px] basis-1/3 rounded-md shrink" />
+      <ul className="flex flex-wrap gap-4 pt-20 container">
+        <Skeleton classNames="h-[590px] basis-[373px] rounded-md" />
+        <Skeleton classNames="h-[590px] basis-[373px] rounded-md" />
+        <Skeleton classNames="h-[590px] basis-[373px] rounded-md" />
       </ul>
     );
   }
@@ -18,7 +18,7 @@ export const ArticlesList = () => {
   if (errors) {
     return (
       <div className="text-center text-2xl container pt-20 text-red-800 font-bold">
-        Ooops! Some error, please try letter. <br />
+        Ooops! Some error, please try latter. <br />
         ErrorMessage: {errors}
       </div>
     );
