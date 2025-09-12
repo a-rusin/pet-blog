@@ -101,7 +101,7 @@ export const createUpdateArticle = createAsyncThunk(
         ...payload,
         author: payload.author.id,
       };
-      const data: ArticleServer = await articlesService.createAndUpdate(serverData);
+      const data = await articlesService.createAndUpdate(serverData);
       articlesSchemaServer.parse(data);
 
       if (cb) cb();

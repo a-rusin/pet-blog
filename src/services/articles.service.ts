@@ -11,12 +11,12 @@ export const articlesService = {
   getById: async (id: string) => {
     const url = `${apiUrls.articles}/${id}`;
 
-    const { data } = await http.get<ArticleServer>(url);
+    const { data } = await http.get<ArticleServer | null>(url);
     return data;
   },
   createAndUpdate: async (payload: ArticleServer) => {
     const url = `${apiUrls.articles}/${payload.id}`;
-    const { data } = await http.put<ArticleServer>(url, payload);
+    const { data } = await http.put<ArticleServer | null>(url, payload);
     return data;
   },
   getUserArticle: async (userId: string) => {

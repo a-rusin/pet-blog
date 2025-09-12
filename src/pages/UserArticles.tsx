@@ -76,15 +76,24 @@ export const UserArticles = () => {
       <ul className="divide-y divide-gray-200 pt-8">
         {articles.map((item, index) => (
           <li key={item.id} className="py-4 flex gap-2 justify-between">
-            <div className="text-lg">
-              <div>
+            <div className="flex gap-2 items-center">
+              <div className="text-lg">
                 <span>{index + 1}. </span>
                 <Link className="underline decoration-solid" to={routes.article(item.id, false)}>
                   {item.title}
                 </Link>
               </div>
+              <div className="text-black/50 text-sm">{convertDate.toClient(item.createdAt)}</div>
             </div>
-            <div className="text-black/50 text-sm">{convertDate.toClient(item.createdAt)}</div>
+            <div className="flex gap-2">
+              <Link
+                to={routes.user(`my-articles/edit/${item.id}`, false)}
+                className="px-8 py-2 bg-green-500 rounded-md text-lg text-white font-bold inline-block"
+              >
+                Edit
+              </Link>
+              <div className="px-8 py-2 bg-red-600 rounded-md text-lg text-white font-bold inline-block">Delete</div>
+            </div>
           </li>
         ))}
       </ul>
