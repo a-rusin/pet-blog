@@ -30,4 +30,9 @@ export const articlesService = {
 
     return data;
   },
+  deleteArticleById: async (id: string) => {
+    const url = `${apiUrls.articles}/${id}`;
+    const { data } = await http.delete<null>(url);
+    return data;
+  },
 };

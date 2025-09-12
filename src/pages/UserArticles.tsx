@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../types/store";
+import { useAppDispatch, useAppSelector } from "../types/store";
 import { ArticleServer } from "../types/Article";
 import { articlesService } from "../services/articles.service";
 import { errorHandler } from "../utils/errorHandler";
@@ -7,12 +7,15 @@ import { Link } from "react-router-dom";
 import { routes } from "../configs/routes";
 import { Skeleton } from "../components/Skeleton";
 import { convertDate } from "../utils/convertDate";
+import { articleDeleted } from "../store/articlesSlice";
 
 export const UserArticles = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [articles, setArticles] = useState<ArticleServer[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState<string | null>(null);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getUserArticles();
@@ -26,6 +29,22 @@ export const UserArticles = () => {
     } catch (error: unknown) {
       const errors = errorHandler(error);
       setErrors(errors);
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteArticle = async (id: string) => {
+    try {
+      setIsLoading(true);
+
+      await articlesService.deleteArticleById(id);
+
+      dispatch(articleDeleted(id));
+      setArticles((prev) => prev && prev.filter((item) => item.id !== id));
+
+      setIsLoading(false);
+    } catch (error) {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -88,11 +107,16 @@ export const UserArticles = () => {
             <div className="flex gap-2">
               <Link
                 to={routes.user(`my-articles/edit/${item.id}`, false)}
-                className="px-8 py-2 bg-green-500 rounded-md text-lg text-white font-bold inline-block"
+                className="px-8 py-2 bg-green-500 rounded-md text-lg text-white font-bold inline-block cursor-pointer"
               >
                 Edit
               </Link>
-              <div className="px-8 py-2 bg-red-600 rounded-md text-lg text-white font-bold inline-block">Delete</div>
+              <div
+                className="px-8 py-2 bg-red-600 rounded-md text-lg text-white font-bold inline-block cursor-pointer"
+                onClick={() => handleDeleteArticle(item.id)}
+              >
+                Delete
+              </div>
             </div>
           </li>
         ))}

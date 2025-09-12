@@ -21,7 +21,11 @@ const initialState: ArticleState = {
 const articlesSlice = createSlice({
   name: "articles",
   initialState,
-  reducers: {},
+  reducers: {
+    articleDeleted(state, action: PayloadAction<string>) {
+      state.entities = state.entities && state.entities.filter((item) => item.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllArticles.pending, (state) => {
@@ -115,3 +119,4 @@ export const createUpdateArticle = createAsyncThunk(
 );
 
 export const articlesReducer = articlesSlice.reducer;
+export const { articleDeleted } = articlesSlice.actions;
